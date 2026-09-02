@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elm-memory"
+version = "0.1.0"
+description = "Continual Self-Improvement with Lightweight Experiential Latent Memories (arXiv:2606.17803)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Toyota Motor Europe & University of Trento" }
+]
+keywords = [
+    "continual-learning",
+    "large-language-models",
+    "reinforcement-learning",
+    "grpo",
+    "soft-prompts",
+    "mathematical-reasoning"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.1.0",
+    "transformers>=4.40.0",
+    "peft>=0.10.0",
+    "trl>=0.8.0",
+    "accelerate>=0.29.0",
+    "datasets>=2.18.0",
+    "sympy>=1.12",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "scikit-learn>=1.3.0",
+    "tqdm>=4.66.0",
+    "rich>=13.7.0",
+    "fire>=0.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "black>=24.0.0",
+    "ruff>=0.4.0",
+]
+viz = [
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+]
+
+[project.scripts]
+elm = "elm.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["elm*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
