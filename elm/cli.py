@@ -87,13 +87,14 @@ def main():
     parser = build_parser()
     args = parser.parse_args()
     
-    if not args.command:
+    command: str = getattr(args, "command", "")
+    if not command:
         parser.print_help()
         sys.exit(1)
         
     config = ELMConfig()
     
-    if args.command == "online":
+    if command == "online":
         config.retrieval.retrieval_mode = args.retrieval
         dataset = load_benchmark(args.benchmark, max_samples=args.max_samples)
         model, tokenizer = load_model_and_tokenizer(args.model, args.mock_run)
@@ -113,7 +114,7 @@ def main():
             }, f, indent=2)
         print(f"\n[Result Saved] -> {summary_path}")
         
-    elif args.command == "offline":
+    elif command == "offline":
         dataset = load_benchmark(args.benchmark, max_samples=args.max_samples)
         model, tokenizer = load_model_and_tokenizer(args.model, args.mock_run)
         pipeline = OfflineELMPipeline(config=config, model=model, tokenizer=tokenizer)
@@ -129,7 +130,7 @@ def main():
             print(f"Oracle ZS vs Mem Acc: {eval_res.oracle_accuracy:.2f}%")
             print(f"Positive Flips (0->1): {eval_res.positive_flips} | Negative Flips (1->0): {eval_res.negative_flips}")
             
-    elif args.command == "transfer":
+    elif command == "transfer":
         src_ds = load_benchmark(args.source, max_samples=10 if args.mock_run else None)
         tgt_ds = load_benchmark(args.target, max_samples=10 if args.mock_run else None)
         model, tokenizer = load_model_and_tokenizer(args.model, args.mock_run)
@@ -139,7 +140,7 @@ def main():
         res = transfer_pipe.evaluate_transfer(tgt_ds, src_pool)
         print(f"\n[Transfer Complete] Transfer Gain: {res['gain']:+.2f}%")
         
-    elif args.command == "baseline":
+    elif command == "baseline":
         dataset = load_benchmark(args.benchmark, max_samples=args.max_samples)
         model, tokenizer = load_model_and_tokenizer(args.model, args.mock_run)
         
